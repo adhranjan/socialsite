@@ -63,9 +63,11 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $avatar=$data['gender']==0?'avatar/0.png':'avatar/1.png';
         return User::create([
             'name' => ucfirst($data['name']),
             'gender' => $data['gender'],
+            'avatar' => $avatar,
             'email' => $data['email'],
             'profile_id' => md5(rand(1,999).$data['email'].date("Y-m-d h:i:sa")),
             'password' => bcrypt($data['password']),

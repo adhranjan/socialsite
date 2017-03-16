@@ -12,9 +12,7 @@ class profileController extends Controller
 
     public function profile($uniqueIdentity){
         $this->data['user']=$this->getProfile($uniqueIdentity);
-        if($this->data['user']->avatar==null){
-            $this->data['avatar']=$this->data['user']->gender=='male'?'dsa':'';
-        }
+        
         return view('profile.profile',$this->data);
     }
 }

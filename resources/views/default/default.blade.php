@@ -27,7 +27,8 @@
 <div class="container body" id="app">
     <div class="main_container">
         @include('default.header')
-                <!-- page content -->
+        <init></init>
+        <!-- page content -->
         <div class="right_col" role="main">
             @yield('body_content')
         </div>

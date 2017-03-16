@@ -11,12 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-
 
 
 Auth::routes();
@@ -24,6 +18,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index');
 
 Route::group(['middleware' => ['auth']], function (){
+    Route::get('/auth_user_data', function (){
+        return Auth::User();
+    });
     Route::get('/get_unread',function(){
        return Auth::user()->unreadNotifications;
     });
@@ -32,10 +29,17 @@ Route::group(['middleware' => ['auth']], function (){
     Route::post('/friend_response/{id}', 'FriendshipController@update');
     Route::post('/cancel_request/{id}', 'FriendshipController@cancel');
     Route::post('/delete_friend/{id}', 'FriendshipController@fight');
+    Route::post('/create/post', 'PostController@create');
+    Route::post('/create/wall/post', 'PostController@wallPost');
+    Route::get('/get/friend/post', 'FeedController@index');
+    Route::get('/get/wall/post/{id}', 'FeedController@feedOnWall');
+    Route::post('/like/{id}', 'LikeController@like');
+    Route::post('/unlike/{id}', 'LikeController@unlike');
+    Route::get('/', 'HomeController@index');
+    Route::get('/', 'HomeController@index');
     Route::get('/{profileId}', 'ProfileController@profile')->name('profile');
 });
 
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');

@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 49);
+/******/ 	return __webpack_require__(__webpack_require__.s = 73);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -73,7 +73,7 @@
 "use strict";
 
 
-var bind = __webpack_require__(9);
+var bind = __webpack_require__(10);
 
 /*global toString:true*/
 
@@ -374,6 +374,59 @@ module.exports = {
 
 /***/ }),
 /* 1 */
+/***/ (function(module, exports) {
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = options.computed || (options.computed = {})
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -10600,7 +10653,7 @@ return jQuery;
 
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10624,10 +10677,10 @@ function getDefaultAdapter() {
   var adapter;
   if (typeof XMLHttpRequest !== 'undefined') {
     // For browsers use XHR adapter
-    adapter = __webpack_require__(5);
+    adapter = __webpack_require__(6);
   } else if (typeof process !== 'undefined') {
     // For node use HTTP adapter
-    adapter = __webpack_require__(5);
+    adapter = __webpack_require__(6);
   }
   return adapter;
 }
@@ -10698,10 +10751,10 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = defaults;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports) {
 
 // shim for using process in browser
@@ -10887,7 +10940,7 @@ process.umask = function() { return 0; };
 
 
 /***/ }),
-/* 4 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20069,10 +20122,10 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3), __webpack_require__(11)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4), __webpack_require__(11)))
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20083,7 +20136,7 @@ var settle = __webpack_require__(21);
 var buildURL = __webpack_require__(24);
 var parseHeaders = __webpack_require__(30);
 var isURLSameOrigin = __webpack_require__(28);
-var createError = __webpack_require__(8);
+var createError = __webpack_require__(9);
 var btoa = (typeof window !== 'undefined' && window.btoa && window.btoa.bind(window)) || __webpack_require__(23);
 
 module.exports = function xhrAdapter(config) {
@@ -20254,10 +20307,10 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ }),
-/* 6 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20283,7 +20336,7 @@ module.exports = Cancel;
 
 
 /***/ }),
-/* 7 */
+/* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20295,7 +20348,7 @@ module.exports = function isCancel(value) {
 
 
 /***/ }),
-/* 8 */
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20319,7 +20372,7 @@ module.exports = function createError(message, config, code, response) {
 
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -20334,59 +20387,6 @@ module.exports = function bind(fn, thisArg) {
     return fn.apply(thisArg, args);
   };
 };
-
-
-/***/ }),
-/* 10 */
-/***/ (function(module, exports) {
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  scopeId,
-  cssModules
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  // inject cssModules
-  if (cssModules) {
-    var computed = options.computed || (options.computed = {})
-    Object.keys(cssModules).forEach(function (key) {
-      var module = cssModules[key]
-      computed[key] = function () { return module }
-    })
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
 
 
 /***/ }),
@@ -20422,7 +20422,7 @@ module.exports = g;
 
 "use strict";
 /* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__(35);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__store__ = __webpack_require__(43);
 
 /**
  * First we will load all of this project's JavaScript dependencies which
@@ -20430,9 +20430,9 @@ module.exports = g;
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-__webpack_require__(34);
-var Vue = __webpack_require__(4);
-Vue.use(__webpack_require__(45));
+__webpack_require__(42);
+var Vue = __webpack_require__(5);
+Vue.use(__webpack_require__(69));
 Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name=_token]').attr('content');
 
 /**
@@ -20440,10 +20440,16 @@ Vue.http.headers.common['X-CSRF-TOKEN'] = $('meta[name=_token]').attr('content')
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
-Vue.component('notification', __webpack_require__(42));
-Vue.component('unreadnotification', __webpack_require__(58));
-Vue.component('friendship', __webpack_require__(41));
+Vue.component('init', __webpack_require__(52));
+Vue.component('notification', __webpack_require__(55));
+Vue.component('unreadnotification', __webpack_require__(56));
+Vue.component('friendship', __webpack_require__(51));
+Vue.component('myprofile', __webpack_require__(54));
+Vue.component('createpost', __webpack_require__(49));
+Vue.component('wallpost', __webpack_require__(58));
+Vue.component('wallfeed', __webpack_require__(57));
+Vue.component('feed', __webpack_require__(50));
+Vue.component('like', __webpack_require__(53));
 
 
 
@@ -20451,7 +20457,7 @@ var app = new Vue({
   el: '#app',
   store: __WEBPACK_IMPORTED_MODULE_0__store__["a" /* store */]
 });
-/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
 
 /***/ }),
 /* 13 */
@@ -20473,9 +20479,9 @@ module.exports = __webpack_require__(15);
 
 
 var utils = __webpack_require__(0);
-var bind = __webpack_require__(9);
+var bind = __webpack_require__(10);
 var Axios = __webpack_require__(17);
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 
 /**
  * Create an instance of Axios
@@ -20508,9 +20514,9 @@ axios.create = function create(instanceConfig) {
 };
 
 // Expose Cancel & CancelToken
-axios.Cancel = __webpack_require__(6);
+axios.Cancel = __webpack_require__(7);
 axios.CancelToken = __webpack_require__(16);
-axios.isCancel = __webpack_require__(7);
+axios.isCancel = __webpack_require__(8);
 
 // Expose all/spread
 axios.all = function all(promises) {
@@ -20531,7 +20537,7 @@ module.exports.default = axios;
 "use strict";
 
 
-var Cancel = __webpack_require__(6);
+var Cancel = __webpack_require__(7);
 
 /**
  * A `CancelToken` is an object that can be used to request cancellation of an operation.
@@ -20595,7 +20601,7 @@ module.exports = CancelToken;
 "use strict";
 
 
-var defaults = __webpack_require__(2);
+var defaults = __webpack_require__(3);
 var utils = __webpack_require__(0);
 var InterceptorManager = __webpack_require__(18);
 var dispatchRequest = __webpack_require__(19);
@@ -20748,8 +20754,8 @@ module.exports = InterceptorManager;
 
 var utils = __webpack_require__(0);
 var transformData = __webpack_require__(22);
-var isCancel = __webpack_require__(7);
-var defaults = __webpack_require__(2);
+var isCancel = __webpack_require__(8);
+var defaults = __webpack_require__(3);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -20858,7 +20864,7 @@ module.exports = function enhanceError(error, config, code, response) {
 "use strict";
 
 
-var createError = __webpack_require__(8);
+var createError = __webpack_require__(9);
 
 /**
  * Resolve or reject a Promise based on response status.
@@ -21314,6 +21320,148 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {},
+    data: function data() {
+        return {
+            content: '',
+            not_working: true
+        };
+    },
+
+    methods: {
+        create_post: function create_post() {
+            var _this = this;
+
+            this.$http.post('create/post', { content: this.content }).then(function (response) {
+                _this.content = '';
+                _this.$store.commit('add_new_post_online', response.body);
+            });
+        }
+    },
+    watch: {
+        content: function content() {
+            if (this.content.length > 0) {
+                this.not_working = false;
+            } else {
+                this.not_working = true;
+            }
+        }
+    }
+
+};
+
+/***/ }),
+/* 33 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {
+        this.getFeed();
+    },
+    data: function data() {
+        return {
+            page: 1,
+            loading: false
+        };
+    },
+
+    methods: {
+        getFeed: function getFeed() {
+            var _this = this;
+
+            this.$http.get('get/friend/post').then(function (posts) {
+                posts.body.forEach(function (post) {
+                    _this.$store.commit('add_post', post);
+                });
+            });
+        },
+        handleScroll: function handleScroll() {
+            var _this2 = this;
+
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 70) {
+                if (this.loading == false) {
+                    this.loading = true;
+                    this.page++;
+                    this.$http.get('get/friend/post?page=' + this.page).then(function (posts) {
+                        posts.body.forEach(function (post) {
+                            _this2.$store.commit('add_post', post);
+                        });
+                        console.log(posts);
+                        if (posts.length == 0) {
+                            _this2.loading = true;
+                        }
+                        _this2.loading = false;
+                    });
+                }
+            }
+        }
+    },
+    computed: {
+        all_posts: function all_posts() {
+            return this.$store.getters.all_post;
+        }
+    },
+    created: function created() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    destroyed: function destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+};
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+
+/***/ }),
+/* 34 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -21322,17 +21470,23 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
+        this.$store.state.visited_profile_id = this.profile_user_id;
         this.$http.get('check_friendship_status/' + this.profile_user_id).then(function (response) {
-            console.log(response.body.status);
             _this.loading = false;
-            _this.status = response.body.status;
+            _this.$store.commit('changeFriendShipStatus', response.body.status);
+            if (response.body.status == 'fight') {
+                _this.$http.get('get/wall/post/' + _this.$store.state.visited_profile_id).then(function (posts) {
+                    posts.body.forEach(function (post) {
+                        _this.$store.commit('add_post', post);
+                    });
+                });
+            }
         });
     },
 
     props: ['profile_user_id'],
     data: function data() {
         return {
-            status: '',
             loading: true
         };
     },
@@ -21343,7 +21497,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loading = true;
             this.$http.post('friend_request/' + this.profile_user_id).then(function (response) {
-                _this2.status = 'cancel'; //activate canrel request btn
+                _this2.$store.commit('changeFriendShipStatus', 'cancel');
                 noty({
                     type: 'success',
                     layout: 'bottomLeft',
@@ -21357,7 +21511,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loading = true;
             this.$http.post('cancel_request/' + this.profile_user_id).then(function (response) {
-                _this3.status = 'not_friend'; //activate add friend btn
+                _this3.$store.commit('changeFriendShipStatus', 'not_friend');
                 noty({
                     type: 'error',
                     layout: 'bottomLeft',
@@ -21371,7 +21525,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loading = true;
             this.$http.post('friend_response/' + this.profile_user_id).then(function (response) {
-                _this4.status = 'fight'; //unfriend btn
+                _this4.$store.commit('changeFriendShipStatus', 'fight');
                 noty({
                     type: 'success',
                     layout: 'bottomLeft',
@@ -21385,8 +21539,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.loading = true;
             this.$http.post('delete_friend/' + this.profile_user_id).then(function (response) {
-                console.log(response);
-                _this5.status = 'not_friend'; //unfriend btn
+                _this5.$store.commit('changeFriendShipStatus', 'not_friend');
                 noty({
                     type: 'error',
                     layout: 'bottomLeft',
@@ -21399,11 +21552,174 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 };
 
 /***/ }),
-/* 33 */
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {
+        this.getAuthUserData();
+    },
+
+    methods: {
+        getAuthUserData: function getAuthUserData() {
+            var _this = this;
+
+            this.$http.get('auth_user_data').then(function (response) {
+                _this.$store.commit('auth_user_data', response.body);
+            });
+        }
+    }
+};
+
+/***/ }),
+/* 36 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {},
+
+    props: ['id'],
+    computed: {
+        postLiker: function postLiker() {
+            var postLiker = [];
+            this.post.likes.forEach(function (like) {
+                postLiker.push(like.user.id);
+            });
+            console.log(postLiker);
+            return postLiker;
+        },
+        auth_user_likes_post: function auth_user_likes_post() {
+            var checkIndex = this.postLiker.indexOf(this.$store.state.auth_user.id);
+
+            if (checkIndex === -1) {
+                return false;
+            } else {
+                return true;
+            }
+        },
+        post: function post() {
+            var _this = this;
+
+            return this.$store.state.posts.find(function (post) {
+                return post.id === _this.id;
+            });
+        }
+    },
+    methods: {
+        like: function like() {
+            var _this2 = this;
+
+            this.$http.post('like/' + this.id).then(function (response) {
+                _this2.$store.commit('update_post_likes', {
+                    id: _this2.id,
+                    like: response.body
+                });
+            });
+        },
+        unlike: function unlike() {
+            var _this3 = this;
+
+            this.$http.post('unlike/' + this.id).then(function (response) {
+                _this3.$store.commit('update_post_unlike', {
+                    id: _this3.id,
+                    like_id: response.body
+                });
+            });
+        }
+    }
+};
+
+/***/ }),
+/* 37 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {
+        this.$store.state.visited_profile_id = this.profile_user_id;
+        this.$store.state.friendShipStatus = 'fight';
+    },
+
+    props: ['profile_user_id'],
+    data: function data() {
+        return {
+            loading: true
+        };
+    }
+};
+
+/***/ }),
+/* 38 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -21430,20 +21746,185 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 });
                 document.getElementById('noty_audio').play();
             });
+        },
+        getHrefHandler: function getHrefHandler(link) {
+            this.$store.commit('hrefHandler', link);
+        }
+    },
+    computed: {
+        display_all: function display_all() {
+            return this.$store.getters.all_notifications;
+        }
+    }
+
+};
+
+/***/ }),
+/* 39 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {
+        this.get_unread();
+    },
+
+    methods: {
+        get_unread: function get_unread() {
+            var _this = this;
+
+            this.$http.get('get_unread').then(function (notifications) {
+                notifications.body.forEach(function (notification) {
+                    console.log(notification);
+                    _this.$store.commit('add_notification', notification);
+                });
+            });
+        }
+    },
+    computed: {
+        all_notification_counted: function all_notification_counted() {
+            return this.$store.getters.all_notification_count;
         }
     }
 };
 
 /***/ }),
-/* 34 */
+/* 40 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function($) {Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {},
+    data: function data() {
+        return {
+            page: 1,
+            loading: false
+        };
+    },
+
+    methods: {
+        handleScroll: function handleScroll() {
+            var _this = this;
+
+            if (this.$store.getters.whatsFriendShipStatus == 'fight') {
+                if ($(window).scrollTop() + $(window).height() > $(document).height() - 30) {
+                    if (this.loading == false) {
+                        this.loading = true;
+                        this.page++;
+                        this.$http.get('get/wall/post/' + this.$store.state.visited_profile_id + '?page=' + this.page).then(function (posts) {
+                            posts.body.forEach(function (post) {
+                                _this.$store.commit('add_post', post);
+                            });
+                            if (posts.body.length == 0) {
+                                _this.loading = true;
+                            }
+                            _this.loading = false;
+                        });
+                    }
+                }
+            }
+        }
+    },
+    computed: {
+        all_posts: function all_posts() {
+            return this.$store.getters.all_post;
+        }
+    },
+    created: function created() {
+        window.addEventListener('scroll', this.handleScroll);
+    },
+    destroyed: function destroyed() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+};
+/* WEBPACK VAR INJECTION */}.call(__webpack_exports__, __webpack_require__(2)))
+
+/***/ }),
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(37);
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = {
+    mounted: function mounted() {},
+    data: function data() {
+        return {
+            content: '',
+            not_working: true
+        };
+    },
+
+    methods: {
+        create_post: function create_post() {
+            var _this = this;
+
+            this.$http.post('create/wall/post', { content: this.content, wall_of: this.$store.state.visited_profile_id }).then(function (response) {
+                _this.content = '';
+                _this.$store.commit('add_new_post_online', response.body);
+            });
+        }
+    },
+    watch: {
+        content: function content() {
+            if (this.content.length > 0) {
+                this.not_working = false;
+            } else {
+                this.not_working = true;
+            }
+        }
+    }
+
+};
+
+/***/ }),
+/* 42 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo__ = __webpack_require__(45);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_laravel_echo___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_laravel_echo__);
 
-window._ = __webpack_require__(38);
+window._ = __webpack_require__(46);
 
 /**
  * We'll load jQuery and the Bootstrap jQuery plugin which provides support
@@ -21451,10 +21932,10 @@ window._ = __webpack_require__(38);
  * code may be modified to fit the specific needs of your application.
  */
 
-window.$ = window.jQuery = __webpack_require__(1);
+window.$ = window.jQuery = __webpack_require__(2);
 
-__webpack_require__(36);
-__webpack_require__(39);
+__webpack_require__(44);
+__webpack_require__(47);
 
 /**
  * Vue is a modern JavaScript library for building interactive web interfaces
@@ -21462,7 +21943,7 @@ __webpack_require__(39);
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = __webpack_require__(4);
+window.Vue = __webpack_require__(5);
 
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
@@ -21495,12 +21976,12 @@ Pusher.log = function (messages) {
 };
 
 /***/ }),
-/* 35 */
+/* 43 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(46);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuex__ = __webpack_require__(70);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return store; });
 
@@ -21510,28 +21991,69 @@ __WEBPACK_IMPORTED_MODULE_1_vue___default.a.use(__WEBPACK_IMPORTED_MODULE_0_vuex
 
 var store = new __WEBPACK_IMPORTED_MODULE_0_vuex__["a" /* default */].Store({
     state: {
-        notifications: []
+        notifications: [],
+        posts: [],
+        auth_user: {},
+        visited_profile_id: '',
+        whatAboutFriendShip: ''
     },
     getters: {
+        whatsFriendShipStatus: function whatsFriendShipStatus(state) {
+            return state.whatAboutFriendShip;
+        },
         all_notifications: function all_notifications(state) {
             return state.notifications;
         },
         all_notification_count: function all_notification_count(state) {
-            console.log(state.notifications.length);
-            console.log(state.notifications.length);
             return state.notifications.length;
+        },
+        all_post: function all_post(state) {
+            return state.posts;
         }
     },
 
     mutations: {
+        changeFriendShipStatus: function changeFriendShipStatus(state, status) {
+            console.log(state);
+            console.log(status);
+            return state.whatAboutFriendShip = status;
+        },
         add_notification: function add_notification(state, notification) {
             return state.notifications.push(notification);
+        },
+        hrefHandler: function hrefHandler(event) {
+            console.log(event);
+        },
+        add_post: function add_post(state, post) {
+            return state.posts.push(post);
+        },
+        add_new_post_online: function add_new_post_online(state, post) {
+            return state.posts.unshift(post);
+        },
+        auth_user_data: function auth_user_data(state, user) {
+            state.auth_user = user;
+        },
+        update_post_likes: function update_post_likes(state, payload) {
+            var post = state.posts.find(function (currentPost) {
+                return currentPost.id === payload.id;
+            });
+            post.likes.push(payload.like);
+        },
+        update_post_unlike: function update_post_unlike(state, payload) {
+            var post = state.posts.find(function (currentPost) {
+                return currentPost.id === payload.id;
+            });
+            var like = post.likes.find(function (l) {
+                return l.id === payload.like_id;
+            });
+            var index = post.likes.indexOf(like);
+            post.likes.splice(index, 1);
         }
     }
 });
 
 /***/ }),
-/* 36 */
+/* 44 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {/*!
@@ -23912,10 +24434,10 @@ if (typeof jQuery === 'undefined') {
 
 }(jQuery);
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 37 */
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(jQuery) {var asyncGenerator = function () {
@@ -24607,7 +25129,7 @@ var Echo = function () {
         }
         if (this.options.broadcaster == 'pusher') {
             if (!window['Pusher']) {
-                window['Pusher'] = __webpack_require__(40);
+                window['Pusher'] = __webpack_require__(48);
             }
             this.connector = new PusherConnector(this.options);
         } else if (this.options.broadcaster == 'socket.io') {
@@ -24689,10 +25211,10 @@ var Echo = function () {
 }();
 
 module.exports = Echo;
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(1)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 38 */
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(global, module) {var __WEBPACK_AMD_DEFINE_RESULT__;/**
@@ -41781,15 +42303,15 @@ module.exports = Echo;
   }
 }.call(this));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(47)(module)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(11), __webpack_require__(71)(module)))
 
 /***/ }),
-/* 39 */
+/* 47 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;!function(root, factory) {
 	 if (true) {
-		 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(1)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
+		 !(__WEBPACK_AMD_DEFINE_ARRAY__ = [__webpack_require__(2)], __WEBPACK_AMD_DEFINE_FACTORY__ = (factory),
 				__WEBPACK_AMD_DEFINE_RESULT__ = (typeof __WEBPACK_AMD_DEFINE_FACTORY__ === 'function' ?
 				(__WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__)) : __WEBPACK_AMD_DEFINE_FACTORY__),
 				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
@@ -43668,7 +44190,7 @@ return window.noty;
 });
 
 /***/ }),
-/* 40 */
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /*!
@@ -47803,14 +48325,82 @@ return /******/ (function(modules) { // webpackBootstrap
 ;
 
 /***/ }),
-/* 41 */
+/* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(10)(
+var Component = __webpack_require__(1)(
   /* script */
   __webpack_require__(32),
   /* template */
-  __webpack_require__(43),
+  __webpack_require__(67),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\Createpost.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Createpost.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7c637ea4", Component.options)
+  } else {
+    hotAPI.reload("data-v-7c637ea4", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(33),
+  /* template */
+  __webpack_require__(65),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\Feed.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Feed.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-58e4cba6", Component.options)
+  } else {
+    hotAPI.reload("data-v-58e4cba6", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 51 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(34),
+  /* template */
+  __webpack_require__(59),
   /* scopeId */
   null,
   /* cssModules */
@@ -47837,14 +48427,116 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 42 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var Component = __webpack_require__(10)(
+var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(33),
+  __webpack_require__(35),
   /* template */
-  __webpack_require__(44),
+  __webpack_require__(66),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\Init.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Init.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-74554218", Component.options)
+  } else {
+    hotAPI.reload("data-v-74554218", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 53 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(36),
+  /* template */
+  __webpack_require__(68),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\Like.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Like.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-b3e01dc2", Component.options)
+  } else {
+    hotAPI.reload("data-v-b3e01dc2", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 54 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(37),
+  /* template */
+  __webpack_require__(61),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\MyProfile.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] MyProfile.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1b78aa05", Component.options)
+  } else {
+    hotAPI.reload("data-v-1b78aa05", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 55 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(38),
+  /* template */
+  __webpack_require__(62),
   /* scopeId */
   null,
   /* cssModules */
@@ -47871,38 +48563,146 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 43 */
+/* 56 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(39),
+  /* template */
+  __webpack_require__(63),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\UnreadNotification.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] UnreadNotification.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-3f297642", Component.options)
+  } else {
+    hotAPI.reload("data-v-3f297642", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 57 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(40),
+  /* template */
+  __webpack_require__(60),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\WallFeed.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] WallFeed.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1a969f90", Component.options)
+  } else {
+    hotAPI.reload("data-v-1a969f90", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 58 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(1)(
+  /* script */
+  __webpack_require__(41),
+  /* template */
+  __webpack_require__(64),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\Wallpost.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] Wallpost.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4f4b9d72", Component.options)
+  } else {
+    hotAPI.reload("data-v-4f4b9d72", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 59 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [(_vm.loading) ? _c('p', {
-    staticClass: "text-info"
-  }, [_vm._v("Loading....")]) : _vm._e(), _vm._v(" "), (_vm.status == 'not_friend') ? _c('button', {
+  return _c('div', {
+    staticClass: "container"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-md-12"
+  }, [(_vm.loading) ? _c('i', {
+    staticClass: "fa fa-spinner fa-spin fa-2x"
+  }) : _c('div', [(this.$store.getters.whatsFriendShipStatus == 'not_friend') ? _c('button', {
     staticClass: "btn btn-info",
     on: {
       "click": _vm.add_friend
     }
-  }, [_vm._v("Make Friend")]) : _vm._e(), _vm._v(" "), (_vm.status == 'cancel') ? _c('button', {
+  }, [_vm._v("Make Friend")]) : _vm._e(), _vm._v(" "), (this.$store.getters.whatsFriendShipStatus == 'cancel') ? _c('button', {
     staticClass: "btn btn-danger",
     on: {
       "click": _vm.cancel_request
     }
-  }, [_vm._v("Cancel Request")]) : _vm._e(), _vm._v(" "), (_vm.status == 'fight') ? _c('button', {
+  }, [_vm._v("Cancel Request")]) : _vm._e(), _vm._v(" "), (this.$store.getters.whatsFriendShipStatus == 'fight') ? _c('button', {
     staticClass: "btn btn-warning",
     on: {
       "click": _vm.fight
     }
-  }, [_vm._v("Unfriend")]) : _vm._e(), _vm._v(" "), (_vm.status == 'accept/ignore') ? _c('button', {
+  }, [_vm._v("Unfriend")]) : _vm._e(), _vm._v(" "), (this.$store.getters.whatsFriendShipStatus == 'accept/ignore') ? _c('button', {
     staticClass: "btn btn-success",
     on: {
       "click": _vm.friend_response
     }
-  }, [_vm._v("Accept Request")]) : _vm._e(), _vm._v(" "), (_vm.status == 'accept/ignore') ? _c('button', {
+  }, [_vm._v("Accept Request")]) : _vm._e(), _vm._v(" "), (this.$store.getters.whatsFriendShipStatus == 'accept/ignore') ? _c('button', {
     staticClass: "btn btn-danger",
     on: {
       "click": _vm.cancel_request
     }
-  }, [_vm._v("Cancel Request")]) : _vm._e()])
+  }, [_vm._v("Cancel Request")]) : _vm._e()])])])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -47913,11 +48713,115 @@ if (false) {
 }
 
 /***/ }),
-/* 44 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div')
+  return _c('div', [(this.$store.getters.whatsFriendShipStatus == 'fight') ? _c('ul', {
+    staticClass: "messages"
+  }, _vm._l((_vm.all_posts), function(post) {
+    return _c('li', [_c('img', {
+      staticClass: "avatar",
+      attrs: {
+        "src": post.user.avatar,
+        "alt": "Avatar"
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "message_date"
+    }, [_c('p', {
+      staticClass: "month"
+    }, [_vm._v(_vm._s(post.created_at))])]), _vm._v(" "), _c('div', {
+      staticClass: "message_wrapper"
+    }, [_c('h4', {
+      staticClass: "heading"
+    }, [_c('a', {
+      attrs: {
+        "href": post.user.profile_id
+      }
+    }, [_vm._v(_vm._s(post.user.name))])]), _vm._v(" "), _c('blockquote', {
+      staticClass: "message"
+    }, [_vm._v("\n                    " + _vm._s(post.content) + "\n                ")]), _vm._v(" "), _c('like', {
+      attrs: {
+        "id": post.id
+      }
+    })], 1)])
+  })) : _vm._e(), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "text-center"
+  }, [_c('i', {
+    staticClass: "fa fa-spinner fa-spin fa-5x"
+  })]) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1a969f90", module.exports)
+  }
+}
+
+/***/ }),
+/* 61 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _vm._m(0)
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('a', {
+    staticClass: "btn btn-success"
+  }, [_c('i', {
+    staticClass: "fa fa-edit m-right-xs"
+  }), _vm._v("Edit Profile")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-1b78aa05", module.exports)
+  }
+}
+
+/***/ }),
+/* 62 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('li', {
+    staticClass: "dropdown",
+    attrs: {
+      "role": "presentation"
+    }
+  }, [_c('a', {
+    staticClass: "dropdown-toggle info-number",
+    attrs: {
+      "href": "javascript:;",
+      "data-toggle": "dropdown",
+      "aria-expanded": "false"
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-envelope-o"
+  }), _vm._v(" "), _c('span', {
+    staticClass: "badge bg-green"
+  }, [_c('unreadnotification')], 1)]), _vm._v(" "), _c('ul', {
+    staticClass: "dropdown-menu list-unstyled msg_list",
+    attrs: {
+      "id": "menu1",
+      "role": "menu"
+    }
+  }, _vm._l((_vm.display_all), function(display) {
+    return _c('li', [_c('a', {
+      on: {
+        "click": function($event) {
+          _vm.getHrefHandler(1)
+        }
+      }
+    }, [_c('span', {
+      staticClass: "image"
+    }), _vm._v(" "), _c('span', [_c('span', [_vm._v(_vm._s(display.data.name))]), _vm._v(" "), _c('span', {
+      staticClass: "time"
+    }, [_vm._v("3 mins agos")])]), _vm._v(" "), _c('span', {
+      staticClass: "message"
+    }, [_vm._v("\n                Film festivals used to be do-or-die moments for movie makers. They were where...\n                ")])])])
+  }))])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
@@ -47928,7 +48832,223 @@ if (false) {
 }
 
 /***/ }),
-/* 45 */
+/* 63 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_vm._v("\n    " + _vm._s(_vm.all_notification_counted) + "\n")])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-3f297642", module.exports)
+  }
+}
+
+/***/ }),
+/* 64 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return (this.$store.state.friendShipStatus == 'fight') ? _c('div', [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.content),
+      expression: "content"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "placeholder": "Write on all",
+      "rows": "4"
+    },
+    domProps: {
+      "value": (_vm.content)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.content = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-success pull-right",
+    attrs: {
+      "disabled": _vm.not_working
+    },
+    on: {
+      "click": function($event) {
+        _vm.create_post()
+      }
+    }
+  }, [_vm._v(" Post ")])]) : _vm._e()
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4f4b9d72", module.exports)
+  }
+}
+
+/***/ }),
+/* 65 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('ul', {
+    staticClass: "messages"
+  }, _vm._l((_vm.all_posts), function(post) {
+    return _c('li', [_c('img', {
+      staticClass: "avatar",
+      attrs: {
+        "src": post.user.avatar,
+        "alt": "Avatar"
+      }
+    }), _vm._v(" "), _c('div', {
+      staticClass: "message_date"
+    }, [_c('p', {
+      staticClass: "month"
+    }, [_vm._v(_vm._s(post.created_at))])]), _vm._v(" "), _c('div', {
+      staticClass: "message_wrapper"
+    }, [_c('h5', {
+      staticClass: "heading"
+    }, [_c('a', {
+      attrs: {
+        "href": post.user.profile_id
+      }
+    }, [_vm._v(_vm._s(post.user.name))]), _vm._v(" "), (post.wallof.id !== post.user.id) ? _c('span', [_vm._v("\n                        to\n                        "), _c('a', {
+      attrs: {
+        "href": post.wallof.profile_id
+      }
+    }, [_vm._v(_vm._s(post.wallof.name))])]) : _vm._e()]), _vm._v(" "), _c('blockquote', {
+      staticClass: "message"
+    }, [_vm._v("\n                    " + _vm._s(post.content) + "\n                ")]), _vm._v(" "), _c('like', {
+      attrs: {
+        "id": post.id
+      }
+    })], 1)])
+  })), _vm._v(" "), (_vm.loading) ? _c('div', {
+    staticClass: "text-center"
+  }, [_c('i', {
+    staticClass: "fa fa-spinner fa-spin fa-5x"
+  })]) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-58e4cba6", module.exports)
+  }
+}
+
+/***/ }),
+/* 66 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div')
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-74554218", module.exports)
+  }
+}
+
+/***/ }),
+/* 67 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.content),
+      expression: "content"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "placeholder": "Whats on your mind?",
+      "rows": "4"
+    },
+    domProps: {
+      "value": (_vm.content)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.content = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('br'), _vm._v(" "), _c('button', {
+    staticClass: "btn btn-success pull-right",
+    attrs: {
+      "disabled": _vm.not_working
+    },
+    on: {
+      "click": function($event) {
+        _vm.create_post()
+      }
+    }
+  }, [_vm._v(" Post ")])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7c637ea4", module.exports)
+  }
+}
+
+/***/ }),
+/* 68 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', [_c('p', [(!_vm.auth_user_likes_post) ? _c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.like()
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-thumbs-o-up fa-2x"
+  })]) : _c('a', {
+    attrs: {
+      "href": "#"
+    },
+    on: {
+      "click": function($event) {
+        $event.preventDefault();
+        _vm.unlike()
+      }
+    }
+  }, [_c('i', {
+    staticClass: "fa fa-thumbs-up fa-2x"
+  })]), _vm._v(" "), (_vm.post.likes.length != 0) ? _c('span', [(!_vm.auth_user_likes_post) ? _c('span', [(_vm.post.likes.length == 1) ? _c('span', [_c('a', {
+    attrs: {
+      "href": _vm.post.likes[0].user.profile_id
+    }
+  }, [_vm._v(_vm._s(_vm.post.likes[0].user.name))]), _vm._v(" likes this.\n                ")]) : _c('span', [_vm._v("\n                        " + _vm._s(_vm.post.likes.length) + " people likes.\n                ")])]) : _c('span', [(_vm.post.likes.length == 1) ? _c('span', [_vm._v("\n                    You like this.\n                ")]) : _c('span', [_vm._v("\n                    You and " + _vm._s(_vm.post.likes.length - 1) + " other like this.\n                ")])])]) : _vm._e()])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-b3e01dc2", module.exports)
+  }
+}
+
+/***/ }),
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -49009,7 +50129,7 @@ var xhrClient = function (request) {
 
 var nodeClient = function (request) {
 
-    var client = __webpack_require__(48);
+    var client = __webpack_require__(72);
 
     return new PromiseObj(function (resolve) {
 
@@ -49463,7 +50583,7 @@ module.exports = plugin;
 
 
 /***/ }),
-/* 46 */
+/* 70 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -50278,7 +51398,7 @@ var index_esm = {
 
 
 /***/ }),
-/* 47 */
+/* 71 */
 /***/ (function(module, exports) {
 
 module.exports = function(module) {
@@ -50306,112 +51426,18 @@ module.exports = function(module) {
 
 
 /***/ }),
-/* 48 */
+/* 72 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
 
 /***/ }),
-/* 49 */
+/* 73 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(12);
 module.exports = __webpack_require__(13);
 
-
-/***/ }),
-/* 50 */,
-/* 51 */,
-/* 52 */,
-/* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */,
-/* 57 */,
-/* 58 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(10)(
-  /* script */
-  __webpack_require__(59),
-  /* template */
-  __webpack_require__(60),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "C:\\xampp\\htdocs\\socialsite\\resources\\assets\\js\\components\\UnreadNotification.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] UnreadNotification.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-3f297642", Component.options)
-  } else {
-    hotAPI.reload("data-v-3f297642", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 59 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = {
-    mounted: function mounted() {
-        this.get_unread();
-    },
-
-    methods: {
-        get_unread: function get_unread() {
-            var _this = this;
-
-            this.$http.get('get_unread').then(function (notifications) {
-                notifications.body.forEach(function (notification) {
-                    _this.$store.commit('add_notification', notification);
-                });
-            });
-        }
-    },
-    computed: {
-        all_notification_counted: function all_notification_counted() {
-            console.log(this.$store.getters.all_notification_count);
-            return this.$store.getters.all_notification_count;
-        }
-    }
-};
-
-/***/ }),
-/* 60 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', [_vm._v("\n    " + _vm._s(_vm.all_notification_counted) + "\n")])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-3f297642", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

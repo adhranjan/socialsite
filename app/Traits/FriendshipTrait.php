@@ -2,6 +2,7 @@
 namespace App\Traits;
 
 use App\Friendship;
+use App\User;
 use Illuminate\Support\Facades\Auth;
 
 trait FriendshipTrait {
@@ -44,7 +45,6 @@ trait FriendshipTrait {
         return 0;
     }
 
-
     public function createFriendRequest($receiver){
         Friendship::create([
             'sender'=>Auth::User()->id,
@@ -60,6 +60,29 @@ trait FriendshipTrait {
 
     public function cancelPreviousRequest($oldRequest){
         $oldRequest->forceDelete();
+    }
+
+    public function friends(){
+        $friends1=array();
+
+        $f1=Friendship::where('status',1)
+                        ->where('sender',Auth::User()->id)
+                        ->get();
+
+        foreach ($f1 as $friendship){
+            array_push($friends1,User::find($friendship->receiver));
+        }
+
+        $friends2=array();
+        $f2=Friendship::where('status',1)
+            ->where('receiver',Auth::User()->id)
+            ->get();
+
+        foreach ($f2 as $friendship){
+            array_push($friends2,User::find($friendship->sender));
+        }
+
+        return array_merge($friends1,$friends2);
     }
 
 }

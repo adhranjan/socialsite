@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Traits\FriendshipTrait;
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable
 {
@@ -27,6 +28,27 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function Posts(){
+        return $this->hasMany('App\Post','user_id');
+    }
+
+
+    public function myFriends()
+    {
+        //change this in while
+    }
+
+    public function getAvatarAttribute($avatar)
+    {
+        return asset(Storage::url($avatar));
+    }
+
+    public function getProfileIdAttribute($profile_id)
+    {
+        return asset(route('profile',$profile_id));
+    }
+
 
 
 }
