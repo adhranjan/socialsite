@@ -24,6 +24,5 @@ class FeedController extends Controller
     public function feedOnWall($id){
         $post=Post::where('wall_of',$id)->orderBy('id','desc')->paginate(4)->toArray()['data'];
         return $post;
-
     }
 }

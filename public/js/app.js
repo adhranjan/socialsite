@@ -21418,11 +21418,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         posts.body.forEach(function (post) {
                             _this2.$store.commit('add_post', post);
                         });
-                        console.log(posts);
-                        if (posts.length == 0) {
+                        if (posts.body.length == 0) {
                             _this2.loading = true;
                         }
-                        _this2.loading = false;
                     });
                 }
             }
@@ -21731,6 +21729,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         this.listen();
     },
+    data: function data() {
+        return {
+            notificationType: ''
+        };
+    },
+
 
     props: ['id'],
     methods: {
@@ -21738,13 +21742,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             Echo.private('App.User.' + this.id).notification(function (notification) {
-                _this.$store.commit('add_notification', notification);
-                noty({
-                    type: 'success',
-                    layout: 'bottomLeft',
-                    text: notification.message
-                });
-                document.getElementById('noty_audio').play();
+                console.log(1);
+                _this.notificationType = notification.type.split("\\");
+                console.log(_this.notificationType);
+                if (_this.notificationType[2] == "NewWallPost") {
+                    _this.$store.commit('add_new_post_online', notification.post);
+                } else {
+                    _this.$store.commit('add_notification', notification);
+                    noty({
+                        type: 'success',
+                        layout: 'bottomLeft',
+                        text: notification.message
+                    });
+                    document.getElementById('noty_audio').play();
+                }
             });
         },
         getHrefHandler: function getHrefHandler(link) {
@@ -21783,7 +21794,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$http.get('get_unread').then(function (notifications) {
                 notifications.body.forEach(function (notification) {
-                    console.log(notification);
                     _this.$store.commit('add_notification', notification);
                 });
             });
@@ -21848,7 +21858,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                             if (posts.body.length == 0) {
                                 _this.loading = true;
                             }
-                            _this.loading = false;
                         });
                     }
                 }
@@ -21900,6 +21909,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.$http.post('create/wall/post', { content: this.content, wall_of: this.$store.state.visited_profile_id }).then(function (response) {
                 _this.content = '';
                 _this.$store.commit('add_new_post_online', response.body);
+                _this.$http.get('wall/posted/notify?post=' + response.body.id).then(function (response) {});
             });
         }
     },
@@ -48851,7 +48861,7 @@ if (false) {
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return (this.$store.state.friendShipStatus == 'fight') ? _c('div', [_c('textarea', {
+  return (this.$store.getters.whatsFriendShipStatus == 'fight') ? _c('div', [_c('textarea', {
     directives: [{
       name: "model",
       rawName: "v-model",

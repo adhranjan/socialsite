@@ -58,7 +58,6 @@
                                     if(posts.body.length==0){
                                         this.loading=true;
                                     }
-                                    this.loading=false
                                 })
                     }
                 }

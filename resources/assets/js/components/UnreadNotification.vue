@@ -13,7 +13,6 @@
             get_unread(){
                 this.$http.get('get_unread').then((notifications)=>{
                     notifications.body.forEach((notification)=>{
-                        console.log(notification)
                         this.$store.commit('add_notification',notification)
                     })
                 })

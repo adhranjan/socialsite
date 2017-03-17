@@ -31,11 +31,11 @@ Route::group(['middleware' => ['auth']], function (){
     Route::post('/delete_friend/{id}', 'FriendshipController@fight');
     Route::post('/create/post', 'PostController@create');
     Route::post('/create/wall/post', 'PostController@wallPost');
+    Route::get('/wall/posted/notify', 'PostController@forwardToFriend');
     Route::get('/get/friend/post', 'FeedController@index');
     Route::get('/get/wall/post/{id}', 'FeedController@feedOnWall');
     Route::post('/like/{id}', 'LikeController@like');
     Route::post('/unlike/{id}', 'LikeController@unlike');
-    Route::get('/', 'HomeController@index');
     Route::get('/', 'HomeController@index');
     Route::get('/{profileId}', 'ProfileController@profile')->name('profile');
 });

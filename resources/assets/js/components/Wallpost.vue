@@ -1,7 +1,7 @@
 <template>
-    <div v-if="this.$store.state.friendShipStatus == 'fight'">
+    <div v-if="this.$store.getters.whatsFriendShipStatus == 'fight'">
         <textarea class="form-control" placeholder="Write on all" rows="4" v-model="content"></textarea>
-        <br>
+        <br/>
         <button class="btn btn-success pull-right" :disabled="not_working" @click="create_post()"> Post </button>
     </div>
 </template>
@@ -23,6 +23,8 @@
                       .then((response)=>{
                           this.content='';
                           this.$store.commit('add_new_post_online',response.body);
+                          this.$http.get('wall/posted/notify?post='+response.body.id).then((response)=>{
+                          });
                       })
           }
         },

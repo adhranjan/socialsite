@@ -30,11 +30,23 @@
             mounted() {
                     this.listen();
                 },
+            data () {
+                return {
+                    notificationType:'',
+                };
+            },
+
             props:['id'],
             methods:{
                 listen(){
                     Echo.private('App.User.'+this.id)
                         .notification((notification)=>{
+                            console.log(1);
+                            this.notificationType=notification.type.split("\\");
+                            console.log(this.notificationType)
+                            if(this.notificationType[2] == "NewWallPost"){
+                                this.$store.commit('add_new_post_online',notification.post);
+                            }else{
                             this.$store.commit('add_notification',notification)
                             noty({
                                 type:'success',
@@ -42,6 +54,7 @@
                                 text:notification.message,
                             })
                             document.getElementById('noty_audio').play()
+                            }
                         })
                     },
                 getHrefHandler(link){
